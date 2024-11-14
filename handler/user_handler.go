@@ -128,10 +128,10 @@ func UpdateProfile(c *gin.Context) {
     }
 
     // 返回成功响应
-    c.JSON(http.StatusOK, api.UserProfileResponse{
+    c.JSON(http.StatusOK, api.UpdateUserProfileResponse{
         Status:  "success",
         Message: "User profile updated successfully",
-        UserId:  user.ID,
+        UserId:  fmt.Sprintf("%d", user.ID),
         Name:    user.Name,
         Phone:   user.Phone,
         IdNumber: user.IDNumber,
