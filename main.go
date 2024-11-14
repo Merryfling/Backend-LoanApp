@@ -20,6 +20,7 @@ func main() {
     profile := router.Group("/api/v1/user", middleware.AuthMiddleware())
     {
         profile.GET("/profile", handler.GetProfile)
+        profile.POST("/profile", handler.UpdateProfile)
     }
 
     // 贷款申请路由（需要认证）
