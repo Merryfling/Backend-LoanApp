@@ -92,3 +92,48 @@ func GetProfile(c *gin.Context) {
         IdNumber: user.IDNumber,
     })
 }
+
+// 用户资料更新
+func UpdateProfile(c *gin.Context) {
+    // 从 Context 中获取 userID
+    userID, exists := c.Get("userID")
+    if !exists {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized access"})
+        return
+    }
+
+    var req api.UpdateUserProfileRequest
+    // 解析 JSON 请求并验证 userID 是否匹配
+    if err := c.ShouldBindJSON(&req); err != nil || userID != req.UserId {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+        return
+    }
+
+    var user model.User
+    // 查询用户信息
+    if err := config.DB.Where("id = ?", userID).First(&user).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+        return
+    }
+
+    // 更新用户信息
+    user.Name = req.Name
+    user.Phone = req.Phone
+    user.IDNumber = req.IdNumber
+
+    // 保存更新
+    if err := config.DB.Save(&user).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user profile"})
+        return
+    }
+
+    // 返回成功响应
+    c.JSON(http.StatusOK, api.UserProfileResponse{
+        Status:  "success",
+        Message: "User profile updated successfully",
+        UserId:  user.ID,
+        Name:    user.Name,
+        Phone:   user.Phone,
+        IdNumber: user.IDNumber,
+    })
+}
