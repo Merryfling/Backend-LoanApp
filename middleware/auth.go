@@ -1,7 +1,7 @@
 package middleware
 
 import (
-    "BkLoanApp/config"
+    "loanapp/config"
     "net/http"
     "strings"
 
