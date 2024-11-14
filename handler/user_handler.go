@@ -69,3 +69,26 @@ func Login(c *gin.Context) {
         Token:   token,  // 返回生成的 token
     })
 }
+
+// 用户资料查询
+func GetProfile(c *gin.Context) {
+    userID, exists := c.Get("userID")
+    if !exists {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized access"})
+        return
+    }
+
+    var user model.User
+    // 根据 userID 查询用户信息
+    if err := config.DB.Where("id = ?", userID).First(&user).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+        return
+    }
+    
+    c.JSON(http.StatusOK, api.UserProfileResponse{
+        UserId: user.ID,
+        Name: user.Name,
+        Phone: user.Phone,
+        IdNumber: user.IdNumber
+    })
+}

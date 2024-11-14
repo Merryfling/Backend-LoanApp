@@ -16,6 +16,12 @@ func main() {
     router.POST("/api/v1/register", handler.Register)
     router.POST("/api/v1/login", handler.Login)
 
+    // 用户资料路由
+    profile := router.Group("/api/v1", middleware.AuthMiddleware())
+    {
+        profile.GET("/user", handler.GetProfile)
+    }
+
     // 贷款申请路由（需要认证）
     loan := router.Group("/api/v1/loan", middleware.AuthMiddleware())
     {
