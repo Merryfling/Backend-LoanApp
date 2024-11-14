@@ -26,11 +26,18 @@ func Register(c *gin.Context) {
         return
     }
 
+    // 生成 token
+    token, err := config.GenerateToken(user.ID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+        return
+    }
+
     c.JSON(http.StatusOK, api.RegisterResponse{
         Status:  "success",
         Message: "User registered successfully",
-        UserId:  fmt.Sprintf("%d", user.ID),   // 转换为字符串
-        Token:   "valid_token",
+        UserId:  fmt.Sprintf("%d", user.ID),
+        Token:   token,  // 返回生成的 token
     })
 }
 
@@ -48,10 +55,17 @@ func Login(c *gin.Context) {
         return
     }
 
+    // 生成 token
+    token, err := config.GenerateToken(user.ID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+        return
+    }
+
     c.JSON(http.StatusOK, api.LoginResponse{
         Status:  "success",
         Message: "Login successful",
-        UserId:  fmt.Sprintf("%d", user.ID),   // 转换为字符串
-        Token:   "valid_token",
+        UserId:  fmt.Sprintf("%d", user.ID),
+        Token:   token,  // 返回生成的 token
     })
 }

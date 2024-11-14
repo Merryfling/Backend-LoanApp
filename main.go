@@ -4,7 +4,6 @@ import (
     "loanapp/config"
     "loanapp/handler"
     "loanapp/middleware"
-
     "github.com/gin-gonic/gin"
 )
 
@@ -12,8 +11,8 @@ func main() {
     config.InitDB()  // 初始化数据库
 
     router := gin.Default()
-    
-    // 用户路由
+
+    // 用户注册和登录路由
     router.POST("/api/v1/register", handler.Register)
     router.POST("/api/v1/login", handler.Login)
 
@@ -24,5 +23,5 @@ func main() {
         loan.GET("/status/:application_id", handler.GetLoanStatus)
     }
 
-    router.Run(":8888")  // 启动服务器
+    router.Run(":666")  // 启动服务器
 }
