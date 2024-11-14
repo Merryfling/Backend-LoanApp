@@ -84,11 +84,11 @@ func GetProfile(c *gin.Context) {
         c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
         return
     }
-    
+
     c.JSON(http.StatusOK, api.UserProfileResponse{
-        UserId: user.ID,
+        UserId: fmt.Sprintf("%d", user.ID),
         Name: user.Name,
         Phone: user.Phone,
-        IdNumber: user.IdNumber
+        IdNumber: user.IDNumber,
     })
 }

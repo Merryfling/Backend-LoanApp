@@ -17,9 +17,9 @@ func main() {
     router.POST("/api/v1/login", handler.Login)
 
     // 用户资料路由
-    profile := router.Group("/api/v1", middleware.AuthMiddleware())
+    profile := router.Group("/api/v1/user", middleware.AuthMiddleware())
     {
-        profile.GET("/user", handler.GetProfile)
+        profile.GET("/profile", handler.GetProfile)
     }
 
     // 贷款申请路由（需要认证）
